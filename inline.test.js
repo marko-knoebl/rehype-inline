@@ -48,7 +48,7 @@ it("inlines sample assets into an HTML file", done => {
     );
     expect(result.children[4].tagName).toEqual("img");
     expect(result.children[4].properties.src).toMatch(
-      "data:image/svg;base64,PHN2"
+      "data:image/svg+xml;base64,PHN2"
     );
     done();
   });

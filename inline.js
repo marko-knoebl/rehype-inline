@@ -39,7 +39,11 @@ const inlineNodeContents = (
         throw new Error("image path without file extension");
       }
       const imgContent = fs.readFileSync(image.properties.src, "base64");
-      image.properties.src = `data:image/${fileExt};base64,${imgContent}`;
+      if (fileExt === "svg") {
+        image.properties.src = `data:image/svg+xml;base64,${imgContent}`;
+      } else {
+        image.properties.src = `data:image/${fileExt};base64,${imgContent}`;
+      }
     });
   }
   return rootNode;
