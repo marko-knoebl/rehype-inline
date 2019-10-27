@@ -46,10 +46,8 @@ it("inlines sample assets into an HTML file", done => {
     expect(result.children[3].properties.src).toMatch(
       "data:image/bmp;base64,Qk2qAA"
     );
-    expect(result.children[4].tagName).toEqual("img");
-    expect(result.children[4].properties.src).toMatch(
-      "data:image/svg+xml;base64,PHN2"
-    );
+    expect(result.children[4].tagName).toEqual("svg");
+    expect(result.children[4].children[1].tagName).toEqual("rect");
     done();
   });
 });

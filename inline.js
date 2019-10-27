@@ -1,5 +1,8 @@
-const selectAll = require("hast-util-select").selectAll;
 const fs = require("fs");
+
+const unified = require("unified");
+const rehypeParse = require("rehype-parse");
+const selectAll = require("hast-util-select").selectAll;
 
 const inlineNodeContents = (
   rootNode,
@@ -38,10 +41,26 @@ const inlineNodeContents = (
       if (fileExt === undefined || fileExt === null) {
         throw new Error("image path without file extension");
       }
-      const imgContent = fs.readFileSync(image.properties.src, "base64");
       if (fileExt === "svg") {
-        image.properties.src = `data:image/svg+xml;base64,${imgContent}`;
+        const svgContent = fs.readFileSync(image.properties.src, {
+          encoding: "utf-8"
+        });
+        const svgParser = unified().use(rehypeParse, {
+          fragment: true,
+          space: "svg"
+        });
+        const svgDoc = svgParser.parse(svgContent);
+        for (let childNode of svgDoc.children) {
+          if (childNode.type === "element") {
+            svgNode = childNode;
+            break;
+          }
+        }
+        image.tagName = "svg";
+        image.properties = svgNode.properties;
+        image.children = svgNode.children;
       } else {
+        const imgContent = fs.readFileSync(image.properties.src, "base64");
         image.properties.src = `data:image/${fileExt};base64,${imgContent}`;
       }
     });

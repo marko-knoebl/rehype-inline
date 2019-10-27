@@ -1,12 +1,13 @@
 {
   "name": "@karuga/rehype-inline",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "unified.js / rehype transformer that inlines assets",
   "author": "Marko Knöbl",
   "license": "ISC",
   "main": "inline.js",
   "dependencies": {
-    "hast-util-select": "^3.0.1"
+    "hast-util-select": "^3.0.1",
+    "rehype-parse": "^6.0.1"
   },
   "devDependencies": {
     "jest": "^24.9.0",
