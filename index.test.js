@@ -1,6 +1,6 @@
 const unified = require("unified");
 
-const inline = require("./inline.js");
+const inline = require("./index.js");
 
 const example1 = {
   type: "root",
@@ -14,22 +14,22 @@ const example1 = {
     {
       type: "element",
       tagName: "link",
-      properties: { rel: "stylesheet", href: "test_assets/test_stylesheet.css" }
+      properties: { rel: "stylesheet", href: "test_assets/style.css" }
     },
     {
       type: "element",
       tagName: "script",
-      properties: { src: "test_assets/test_script.js" }
+      properties: { src: "test_assets/script.js" }
     },
     {
       type: "element",
       tagName: "img",
-      properties: { src: "test_assets/test_image.bmp" }
+      properties: { src: "test_assets/image.bmp" }
     },
     {
       type: "element",
       tagName: "img",
-      properties: { src: "test_assets/test_svg.svg" }
+      properties: { src: "test_assets/vector.svg" }
     }
   ]
 };
