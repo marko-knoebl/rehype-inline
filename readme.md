@@ -2,20 +2,29 @@
 
 A rehype / unified plugin that inlines assets like CSS, JavaScript and images into rehype trees.
 
+## Installation
+
+```bash
+npm install @karuga/rehype-inline
+```
+
 ## Example
 
 ```js
 const fs = require("fs");
 const unified = require("unified");
 const rehypeParse = require("rehype-parse");
+const rehypeInline = require("@karuga/rehype-inline");
 const rehypeStringify = require("rehype-stringify");
-const rehypeInline = require("./inline.js");
 
 const input = `
-  <link rel="stylesheet" href="test_assets/style.css" />
-  <script src="test_assets/script.js"></script>
-  <img src="test_assets/image.bmp" />
-  <img src="test_assets/vector.svg" />
+  <link
+    rel="stylesheet"
+    href="node_modules/@karuga/rehype-inline/test_assets/style.css" />
+  <script src="node_modules/@karuga/rehype-inline/test_assets/script.js">
+  </script>
+  <img src="node_modules/@karuga/rehype-inline/test_assets/image.bmp" />
+  <img src="node_modules/@karuga/rehype-inline/test_assets/vector.svg" />
 `;
 
 const pipeline = unified()
