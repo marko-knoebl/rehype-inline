@@ -60,3 +60,19 @@ This will create an unformatted HTML file with this structure:
   <rect x="10" y="10" width="20" height="20" fill="darkgrey"></rect>
 </svg>
 ```
+
+## Options
+
+example:
+
+```js
+const pipeline = unified()
+  .use(rehypeParse, { fragment: true })
+  .use(rehypeInline, { js: true, css: true, images: true, svgElements: false })
+  .use(rehypeStringify);
+```
+
+available options:
+
+- **js**, **css**, **images**: whether to inline these asset types (default: true)
+- **svgElements**: whether to include svgs as `<svg>` elements instead of `<img>` elements (buggy - not recommended)

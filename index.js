@@ -6,7 +6,7 @@ const selectAll = require("hast-util-select").selectAll;
 
 const inlineNodeContents = (
   rootNode,
-  { css = true, js = true, images = true, svg = true }
+  { css = true, js = true, images = true, svgElements = false }
 ) => {
   if (css) {
     const linkElements = selectAll("link", rootNode);
@@ -41,7 +41,7 @@ const inlineNodeContents = (
       if (fileExt === undefined || fileExt === null) {
         throw new Error("image path without file extension");
       }
-      if (fileExt === "svg") {
+      if (fileExt === "svg" && svgElements) {
         const svgContent = fs.readFileSync(image.properties.src, {
           encoding: "utf-8"
         });
@@ -73,13 +73,18 @@ const inlineNodeContents = (
  *
  * Text files are expected to be utf-8 encoded
  */
-const inline = ({ css = true, js = true, images = true, svg = true } = {}) => {
+const inline = ({
+  css = true,
+  js = true,
+  images = true,
+  svgElements = false
+} = {}) => {
   return rootNode =>
     inlineNodeContents(rootNode, {
       css,
       js,
       images,
-      svg
+      svgElements
     });
 };
 
