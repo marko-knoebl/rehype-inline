@@ -50,15 +50,7 @@ This will create an unformatted HTML file with this structure:
   let a = 1;
 </script>
 <img src="data:image/bmp;base64,Qk2qAAAA..." />
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  version="1.1"
-  width="100"
-  height="50"
-  viewBox="-50 0 100 50"
->
-  <rect x="10" y="10" width="20" height="20" fill="darkgrey"></rect>
-</svg>
+<img src="data:image/svg+xml;base64,PHN..." />
 ```
 
 ## Options

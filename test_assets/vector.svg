@@ -5,5 +5,5 @@
   height="50"
   viewBox="-50 0 100 50"
 >
-  <rect x="10" y="10" width="20" height="20" fill="darkgrey">
+  <rect x="10" y="10" width="20" height="20" fill="darkgrey"/>
 </svg>

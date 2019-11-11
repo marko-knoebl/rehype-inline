@@ -59,6 +59,9 @@ const inlineNodeContents = (
         image.tagName = "svg";
         image.properties = svgNode.properties;
         image.children = svgNode.children;
+      } else if (fileExt === "svg") {
+        const imgContent = fs.readFileSync(image.properties.src, "base64");
+        image.properties.src = `data:image/svg+xml;base64,${imgContent}`;
       } else {
         const imgContent = fs.readFileSync(image.properties.src, "base64");
         image.properties.src = `data:image/${fileExt};base64,${imgContent}`;
