@@ -32,10 +32,8 @@ const pipeline = unified()
   .use(rehypeInline)
   .use(rehypeStringify);
 
-pipeline
-  .process(input)
-  .then(result => fs.writeFileSync("demo_output.html", result.toString()))
-  .catch(console.log);
+const output = pipeline.processSync(input).toString();
+fs.writeFileSync("demo_output.html", output);
 ```
 
 This will create an unformatted HTML file with this structure:
@@ -67,4 +65,4 @@ const pipeline = unified()
 available options:
 
 - **js**, **css**, **images**: whether to inline these asset types (default: true)
-- **svgElements**: whether to include svgs as `<svg>` elements instead of `<img>` elements (buggy - not recommended)
+- **svgElements**: whether to include svgs as `<svg>` elements instead of `<img>` elements (default: false)
