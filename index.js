@@ -75,6 +75,13 @@ const inlineNodeContents = (
  * Transformer for unified.js / rehype that inlines assets like css, js and images
  *
  * Text files are expected to be utf-8 encoded
+ *
+ * @param {Object} options
+ * @param {boolean} options.css - inline CSS stylesheets
+ * @param {boolean} options.js - inline JS scripts
+ * @param {boolean} options.images - inline images like png, jpg or svg
+ * @param {boolean} options.svgElements - inline svgs as <svg> elements instead of <img> elements
+ * @returns {Object} unified transformer
  */
 const inline = ({
   css = true,
