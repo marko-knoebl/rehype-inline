@@ -1,6 +1,6 @@
 {
   "name": "rehype-inline",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "unified.js / rehype transformer that inlines assets",
   "author": "Marko Knöbl",
   "license": "ISC",
