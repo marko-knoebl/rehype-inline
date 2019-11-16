@@ -1,6 +1,6 @@
 # Rehype-inline
 
-A rehype / unified plugin that inlines assets like CSS, JavaScript and images into rehype trees.
+A rehype / unified plugin that inlines assets like CSS, JavaScript, images and HTML imports into rehype trees.
 
 ## Installation
 
@@ -24,6 +24,9 @@ const input = `
   <script src="node_modules/rehype-inline/test_assets/script.js"></script>
   <img src="node_modules/rehype-inline/test_assets/image.bmp" />
   <img src="node_modules/rehype-inline/test_assets/vector.svg" />
+  <link
+    rel="import"
+    href="node_modules/rehype-inline/test_assets/fragment.html"/>
 `;
 
 const pipeline = unified()
@@ -48,6 +51,8 @@ This will create an unformatted HTML file with this structure:
 </script>
 <img src="data:image/bmp;base64,Qk2qAAAA..." />
 <img src="data:image/svg+xml;base64,PHN..." />
+<h1>fragment heading</h1>
+<p>fragment paragraph</p>
 ```
 
 ## Options
@@ -57,11 +62,17 @@ example:
 ```js
 const pipeline = unified()
   .use(rehypeParse, { fragment: true })
-  .use(rehypeInline, { js: true, css: true, images: true, svgElements: false })
+  .use(rehypeInline, {
+    js: true,
+    css: true,
+    images: true,
+    imports: true,
+    svgElements: false
+  })
   .use(rehypeStringify);
 ```
 
 available options:
 
-- **js**, **css**, **images**: whether to inline these asset types (default: true)
+- **js**, **css**, **images**, **imports**: whether to inline these asset types (default: true)
 - **svgElements**: whether to include svgs as `<svg>` elements instead of `<img>` elements (default: false)

@@ -3,21 +3,38 @@ const fs = require("fs");
 const unified = require("unified");
 const rehypeParse = require("rehype-parse");
 const selectAll = require("hast-util-select").selectAll;
+const visit = require("unist-util-visit");
 
 const inlineNodeContents = (
   rootNode,
-  { css = true, js = true, images = true, svgElements = false }
+  { css = true, js = true, images = true, imports = true, svgElements = false }
 ) => {
+  if (imports) {
+    const htmlParser = unified().use(rehypeParse, {
+      fragment: true
+    });
+    visit(rootNode, (node, index, parent) => {
+      if (node.tagName === "link" && node.properties.rel.includes("import")) {
+        const fragmentString = fs.readFileSync(node.properties.href, {
+          encoding: "utf-8"
+        });
+        const fragment = htmlParser.parse(fragmentString);
+        parent.children.splice(index, 1, ...fragment.children);
+      }
+    });
+  }
   if (css) {
     const linkElements = selectAll("link", rootNode);
     linkElements.forEach(element => {
-      const stylesheetContent = fs.readFileSync(element.properties.href, {
-        encoding: "utf-8"
-      });
-      element.tagName = "style";
-      // remove previous props
-      element.properties = {};
-      element.children = [{ type: "text", value: stylesheetContent }];
+      if (element.properties.rel.includes("stylesheet")) {
+        const stylesheetContent = fs.readFileSync(element.properties.href, {
+          encoding: "utf-8"
+        });
+        element.tagName = "style";
+        // remove previous props
+        element.properties = {};
+        element.children = [{ type: "text", value: stylesheetContent }];
+      }
     });
   }
   if (js) {
@@ -87,6 +104,7 @@ const inline = ({
   css = true,
   js = true,
   images = true,
+  imports = true,
   svgElements = false
 } = {}) => {
   return rootNode =>
@@ -94,6 +112,7 @@ const inline = ({
       css,
       js,
       images,
+      imports,
       svgElements
     });
 };
