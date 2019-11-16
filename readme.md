@@ -5,7 +5,7 @@ A rehype / unified plugin that inlines assets like CSS, JavaScript and images in
 ## Installation
 
 ```bash
-npm install @karuga/rehype-inline
+npm install rehype-inline
 ```
 
 ## Example
@@ -14,17 +14,16 @@ npm install @karuga/rehype-inline
 const fs = require("fs");
 const unified = require("unified");
 const rehypeParse = require("rehype-parse");
-const rehypeInline = require("@karuga/rehype-inline");
+const rehypeInline = require("rehype-inline");
 const rehypeStringify = require("rehype-stringify");
 
 const input = `
   <link
     rel="stylesheet"
-    href="node_modules/@karuga/rehype-inline/test_assets/style.css" />
-  <script src="node_modules/@karuga/rehype-inline/test_assets/script.js">
-  </script>
-  <img src="node_modules/@karuga/rehype-inline/test_assets/image.bmp" />
-  <img src="node_modules/@karuga/rehype-inline/test_assets/vector.svg" />
+    href="node_modules/rehype-inline/test_assets/style.css" />
+  <script src="node_modules/rehype-inline/test_assets/script.js"></script>
+  <img src="node_modules/rehype-inline/test_assets/image.bmp" />
+  <img src="node_modules/rehype-inline/test_assets/vector.svg" />
 `;
 
 const pipeline = unified()
