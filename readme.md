@@ -1,6 +1,6 @@
 # Rehype-inline
 
-A rehype / unified plugin that inlines assets like CSS, JavaScript, images and HTML imports into rehype trees.
+A rehype / unified plugin that inlines assets like CSS, JavaScript, images and HTML / markdown imports into rehype trees.
 
 ## Installation
 
@@ -26,7 +26,11 @@ const input = `
   <img src="node_modules/rehype-inline/test_assets/vector.svg" />
   <link
     rel="import"
-    href="node_modules/rehype-inline/test_assets/fragment.html"/>
+    href="node_modules/rehype-inline/test_assets/fragment.html" />
+  <link
+    rel="import"
+    href="node_modules/rehype-inline/test_assets/fragment.md"
+    type="text/markdown" />
 `;
 
 const pipeline = unified()
@@ -51,6 +55,8 @@ This will create an unformatted HTML file with this structure:
 </script>
 <img src="data:image/bmp;base64,Qk2qAAAA..." />
 <img src="data:image/svg+xml;base64,PHN..." />
+<h1>fragment heading</h1>
+<p>fragment paragraph</p>
 <h1>fragment heading</h1>
 <p>fragment paragraph</p>
 ```

@@ -48,6 +48,15 @@ const example1 = {
         type: "text/html",
         href: "test_assets/fragment.html"
       }
+    },
+    {
+      type: "element",
+      tagName: "link",
+      properties: {
+        rel: ["import"],
+        type: "text/markdown",
+        href: "test_assets/fragment.md"
+      }
     }
   ]
 };
@@ -75,6 +84,9 @@ it("inlines sample assets into an HTML file", () => {
   expect(result.children[6].value).toEqual("\n");
   expect(result.children[7].tagName).toEqual("p");
   expect(result.children[9].tagName).toEqual("h1");
+  expect(result.children[11].tagName).toEqual("p");
+  // heading from markdown
+  expect(result.children[13].tagName).toEqual("h1");
 });
 
 it("inlines img elements with svg sources as svgs", () => {

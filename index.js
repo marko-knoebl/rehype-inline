@@ -2,6 +2,8 @@ const fs = require("fs");
 
 const unified = require("unified");
 const rehypeParse = require("rehype-parse");
+const remarkParse = require("remark-parse");
+const remarkRehype = require("remark-rehype");
 const selectAll = require("hast-util-select").selectAll;
 const visit = require("unist-util-visit");
 
@@ -13,12 +15,23 @@ const inlineNodeContents = (
     const htmlParser = unified().use(rehypeParse, {
       fragment: true
     });
+    const mdParser = unified()
+      .use(remarkParse)
+      .use(remarkRehype);
     visit(rootNode, (node, index, parent) => {
       if (node.tagName === "link" && node.properties.rel.includes("import")) {
         const fragmentString = fs.readFileSync(node.properties.href, {
           encoding: "utf-8"
         });
-        const fragment = htmlParser.parse(fragmentString);
+        let fragment;
+        if (node.properties.type === "text/markdown") {
+          // markdown import
+          mdFragment = mdParser.parse(fragmentString);
+          fragment = mdParser.runSync(mdFragment);
+        } else {
+          // html import
+          fragment = htmlParser.parse(fragmentString);
+        }
         parent.children.splice(index, 1, ...fragment.children);
       }
     });
