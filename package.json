@@ -18,5 +18,6 @@
   },
   "scripts": {
     "test": "jest"
-  }
+  },
+  "repository": "github:marko-knoebl/rehype-inline"
 }

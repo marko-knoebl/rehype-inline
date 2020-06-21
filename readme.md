@@ -33,12 +33,12 @@ const input = `
     type="text/markdown" />
 `;
 
-const pipeline = unified()
+const processor = unified()
   .use(rehypeParse, { fragment: true })
   .use(rehypeInline)
   .use(rehypeStringify);
 
-const output = pipeline.processSync(input).toString();
+const output = processor.processSync(input).toString();
 fs.writeFileSync("demo_output.html", output);
 ```
 
@@ -66,7 +66,7 @@ This will create an unformatted HTML file with this structure:
 example:
 
 ```js
-const pipeline = unified()
+const processor = unified()
   .use(rehypeParse, { fragment: true })
   .use(rehypeInline, {
     js: true,

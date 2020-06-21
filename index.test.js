@@ -61,12 +61,12 @@ const example1 = {
   ]
 };
 
-const pipeline = unified().use(inline);
-const pipelineWithSvgElements = unified().use(inline, { svgElements: true });
+const processor = unified().use(inline);
+const processorWithSvgElements = unified().use(inline, { svgElements: true });
 
 it("inlines sample assets into an HTML file", () => {
   const example1Copy = JSON.parse(JSON.stringify(example1));
-  const result = pipeline.runSync(example1Copy);
+  const result = processor.runSync(example1Copy);
   expect(result.children[1].tagName).toEqual("style");
   expect(result.children[1].children[0].type).toEqual("text");
   expect(result.children[2].children).toEqual([
@@ -91,7 +91,7 @@ it("inlines sample assets into an HTML file", () => {
 
 it("inlines img elements with svg sources as svgs", () => {
   const example1Copy = JSON.parse(JSON.stringify(example1));
-  const result = pipelineWithSvgElements.runSync(example1Copy);
+  const result = processorWithSvgElements.runSync(example1Copy);
   expect(result.children[4].tagName).toEqual("svg");
   expect(result.children[4].children[1].tagName).toEqual("rect");
 });

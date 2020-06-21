@@ -13,15 +13,13 @@ const inlineNodeContents = (
 ) => {
   if (imports) {
     const htmlParser = unified().use(rehypeParse, {
-      fragment: true
+      fragment: true,
     });
-    const mdParser = unified()
-      .use(remarkParse)
-      .use(remarkRehype);
+    const mdParser = unified().use(remarkParse).use(remarkRehype);
     visit(rootNode, (node, index, parent) => {
       if (node.tagName === "link" && node.properties.rel.includes("import")) {
         const fragmentString = fs.readFileSync(node.properties.href, {
-          encoding: "utf-8"
+          encoding: "utf-8",
         });
         let fragment;
         if (node.properties.type === "text/markdown") {
@@ -38,10 +36,10 @@ const inlineNodeContents = (
   }
   if (css) {
     const linkElements = selectAll("link", rootNode);
-    linkElements.forEach(element => {
+    linkElements.forEach((element) => {
       if (element.properties.rel.includes("stylesheet")) {
         const stylesheetContent = fs.readFileSync(element.properties.href, {
-          encoding: "utf-8"
+          encoding: "utf-8",
         });
         element.tagName = "style";
         // remove previous props
@@ -52,11 +50,11 @@ const inlineNodeContents = (
   }
   if (js) {
     const scriptElements = selectAll("script", rootNode);
-    scriptElements.forEach(element => {
+    scriptElements.forEach((element) => {
       const scriptLocation = element.properties.src;
       if (scriptLocation) {
         const scriptContent = fs.readFileSync(scriptLocation, {
-          encoding: "utf-8"
+          encoding: "utf-8",
         });
         element.properties = {};
         element.children = [{ type: "text", value: scriptContent }];
@@ -65,19 +63,23 @@ const inlineNodeContents = (
   }
   if (images) {
     const imgElements = selectAll("img", rootNode);
-    imgElements.forEach(image => {
+    imgElements.forEach((image) => {
       const imgPath = image.properties.src;
+      if (imgPath.startsWith("data:")) {
+        // ignore image that's already inlined
+        return;
+      }
       const fileExt = imgPath.match("\\.([a-zA-Z]+)$")[1];
       if (fileExt === undefined || fileExt === null) {
         throw new Error("image path without file extension");
       }
       if (fileExt === "svg" && svgElements) {
         const svgContent = fs.readFileSync(image.properties.src, {
-          encoding: "utf-8"
+          encoding: "utf-8",
         });
         const svgParser = unified().use(rehypeParse, {
           fragment: true,
-          space: "svg"
+          space: "svg",
         });
         const svgDoc = svgParser.parse(svgContent);
         for (let childNode of svgDoc.children) {
@@ -118,15 +120,15 @@ const inline = ({
   js = true,
   images = true,
   imports = true,
-  svgElements = false
+  svgElements = false,
 } = {}) => {
-  return rootNode =>
+  return (rootNode) =>
     inlineNodeContents(rootNode, {
       css,
       js,
       images,
       imports,
-      svgElements
+      svgElements,
     });
 };
 
