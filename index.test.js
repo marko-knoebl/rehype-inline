@@ -2,6 +2,8 @@ const unified = require("unified");
 
 const inline = require("./index.js");
 
+const remarkSectionize = require("remark-sectionize");
+
 const example1 = {
   type: "root",
   children: [
@@ -63,6 +65,9 @@ const example1 = {
 
 const pipeline = unified().use(inline);
 const pipelineWithSvgElements = unified().use(inline, { svgElements: true });
+const pipelineWithMdSections = unified().use(inline, {
+  importProcessors: { "text/markdown": [[remarkSectionize]] }
+});
 
 it("inlines sample assets into an HTML file", () => {
   const example1Copy = JSON.parse(JSON.stringify(example1));
@@ -94,4 +99,11 @@ it("inlines img elements with svg sources as svgs", () => {
   const result = pipelineWithSvgElements.runSync(example1Copy);
   expect(result.children[4].tagName).toEqual("svg");
   expect(result.children[4].children[1].tagName).toEqual("rect");
+});
+
+it("sectionizes imported markdown", () => {
+  const example1Copy = JSON.parse(JSON.stringify(example1));
+  const result = pipelineWithMdSections.runSync(example1Copy);
+  expect(result.children[13].tagName).toEqual("section");
+  expect(result.children[13].children[0].tagName).toEqual("h1");
 });

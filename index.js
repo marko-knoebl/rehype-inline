@@ -9,15 +9,26 @@ const visit = require("unist-util-visit");
 
 const inlineNodeContents = (
   rootNode,
-  { css = true, js = true, images = true, imports = true, svgElements = false }
+  {
+    css = true,
+    js = true,
+    images = true,
+    imports = true,
+    importProcessors = {},
+    svgElements = false
+  }
 ) => {
   if (imports) {
     const htmlParser = unified().use(rehypeParse, {
       fragment: true
     });
-    const mdParser = unified()
-      .use(remarkParse)
-      .use(remarkRehype);
+    const additionalProcessors = importProcessors["text/markdown"] || [];
+    const mdProcessors = [
+      [remarkParse],
+      ...additionalProcessors,
+      [remarkRehype]
+    ];
+    const mdParser = unified().use(mdProcessors);
     visit(rootNode, (node, index, parent) => {
       if (node.tagName === "link" && node.properties.rel.includes("import")) {
         const fragmentString = fs.readFileSync(node.properties.href, {
@@ -110,6 +121,8 @@ const inlineNodeContents = (
  * @param {boolean} options.css - inline CSS stylesheets
  * @param {boolean} options.js - inline JS scripts
  * @param {boolean} options.images - inline images like png, jpg or svg
+ * @param {boolean} options.imports - inline imports of HTML or markdown documents
+ * @param {Object} options.importProcessors - mapping of processors for certain MIME types
  * @param {boolean} options.svgElements - inline svgs as <svg> elements instead of <img> elements
  * @returns {Object} unified transformer
  */
@@ -118,6 +131,7 @@ const inline = ({
   js = true,
   images = true,
   imports = true,
+  importProcessors = {},
   svgElements = false
 } = {}) => {
   return rootNode =>
@@ -126,6 +140,7 @@ const inline = ({
       js,
       images,
       imports,
+      importProcessors,
       svgElements
     });
 };
