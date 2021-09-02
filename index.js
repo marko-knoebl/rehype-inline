@@ -1,11 +1,11 @@
-const fs = require("fs");
+import fs from "fs";
 
-const unified = require("unified");
-const rehypeParse = require("rehype-parse");
-const remarkParse = require("remark-parse");
-const remarkRehype = require("remark-rehype");
-const selectAll = require("hast-util-select").selectAll;
-const visit = require("unist-util-visit");
+import { unified } from "unified";
+import rehypeParse from "rehype-parse";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { selectAll } from "hast-util-select";
+import { visit } from "unist-util-visit";
 
 const inlineNodeContents = (
   rootNode,
@@ -24,7 +24,7 @@ const inlineNodeContents = (
         let fragment;
         if (node.properties.type === "text/markdown") {
           // markdown import
-          mdFragment = mdParser.parse(fragmentString);
+          const mdFragment = mdParser.parse(fragmentString);
           fragment = mdParser.runSync(mdFragment);
         } else {
           // html import
@@ -82,6 +82,7 @@ const inlineNodeContents = (
           space: "svg",
         });
         const svgDoc = svgParser.parse(svgContent);
+        let svgNode;
         for (let childNode of svgDoc.children) {
           if (childNode.type === "element") {
             svgNode = childNode;
@@ -132,4 +133,4 @@ const inline = ({
     });
 };
 
-module.exports = inline;
+export default inline;

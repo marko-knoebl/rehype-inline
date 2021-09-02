@@ -1,6 +1,6 @@
-const unified = require("unified");
+import { unified } from "unified";
 
-const inline = require("./index.js");
+import inline from "./index.js";
 
 const example1 = {
   type: "root",
@@ -9,27 +9,27 @@ const example1 = {
       type: "element",
       tagName: "div",
       properties: {},
-      children: [{ type: "text", value: "a" }]
+      children: [{ type: "text", value: "a" }],
     },
     {
       type: "element",
       tagName: "link",
-      properties: { rel: ["stylesheet"], href: "test_assets/style.css" }
+      properties: { rel: ["stylesheet"], href: "test_assets/style.css" },
     },
     {
       type: "element",
       tagName: "script",
-      properties: { src: "test_assets/script.js" }
+      properties: { src: "test_assets/script.js" },
     },
     {
       type: "element",
       tagName: "img",
-      properties: { src: "test_assets/image.bmp" }
+      properties: { src: "test_assets/image.bmp" },
     },
     {
       type: "element",
       tagName: "img",
-      properties: { src: "test_assets/vector.svg" }
+      properties: { src: "test_assets/vector.svg" },
     },
     {
       type: "element",
@@ -37,8 +37,8 @@ const example1 = {
       properties: {
         rel: ["import"],
         type: "text/html",
-        href: "test_assets/fragment.html"
-      }
+        href: "test_assets/fragment.html",
+      },
     },
     {
       type: "element",
@@ -46,8 +46,8 @@ const example1 = {
       properties: {
         rel: ["import"],
         type: "text/html",
-        href: "test_assets/fragment.html"
-      }
+        href: "test_assets/fragment.html",
+      },
     },
     {
       type: "element",
@@ -55,10 +55,10 @@ const example1 = {
       properties: {
         rel: ["import"],
         type: "text/markdown",
-        href: "test_assets/fragment.md"
-      }
-    }
-  ]
+        href: "test_assets/fragment.md",
+      },
+    },
+  ],
 };
 
 const processor = unified().use(inline);
@@ -70,7 +70,7 @@ it("inlines sample assets into an HTML file", () => {
   expect(result.children[1].tagName).toEqual("style");
   expect(result.children[1].children[0].type).toEqual("text");
   expect(result.children[2].children).toEqual([
-    { type: "text", value: "let a = 1;" }
+    { type: "text", value: "let a = 1;" },
   ]);
   expect(result.children[3].tagName).toEqual("img");
   expect(result.children[3].properties.src).toMatch(

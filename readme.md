@@ -11,11 +11,11 @@ npm install rehype-inline
 ## Example
 
 ```js
-const fs = require("fs");
-const unified = require("unified");
-const rehypeParse = require("rehype-parse");
-const rehypeInline = require("rehype-inline");
-const rehypeStringify = require("rehype-stringify");
+import fs from "fs";
+import { unified } from "unified";
+import rehypeParse from "rehype-parse";
+import rehypeInline from "rehype-inline";
+import rehypeStringify from "rehype-stringify";
 
 const input = `
   <link
@@ -73,7 +73,7 @@ const processor = unified()
     css: true,
     images: true,
     imports: true,
-    svgElements: false
+    svgElements: false,
   })
   .use(rehypeStringify);
 ```
